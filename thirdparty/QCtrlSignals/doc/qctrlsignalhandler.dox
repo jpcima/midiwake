@@ -1,0 +1,78 @@
+/*!
+@class QCtrlSignalHandler
+
+Those signals are the typical operating system signals, that can be send to applications. These are:
+- Windows: [HandlerRoutine callback function](https://msdn.microsoft.com/de-de/library/windows/desktop/ms683242(v=vs.85).aspx)
+- Linux/unix: [signal(7) - Linux manual page](http://man7.org/linux/man-pages/man7/signal.7.html)
+
+The QCtrlSignalHandler allows you to register for those signals in a cross-platform way. This means, some signals, that are
+present on all OSses, can be found in the QCtrlSignalHandler::CommonSignals enum. Others can be registered per platform.
+
+The handler internally registers for those signals (Ctrl-Signals), and will emit the ctrlSignal() signal (Qt-Signal).
+
+@note Please read the main page, for more details about how to use them and limitation on the signal types that can be registered
+
+@sa @ref index "Mainpage"
+*/
+
+/*!
+@enum QCtrlSignalHandler::CommonSignals
+
+@note These are not the only possible singals. However, these are the only ones you can find on all platforms. If you want to use other
+signals, simply use the defines available on the specific platform, like for example `SIGQUIT` on linux.
+
+@sa QCtrlSignalHandler::registerForSignal, QCtrlSignalHandler::ctrlSignal, QCtrlSignalHandler::sigInt, QCtrlSignalHandler::sigTerm
+*/
+
+/*!
+@property QCtrlSignalHandler::autoQuitActive
+
+@default{`false`}
+
+If auto quit is active, the handler will automatically register for "quit-like" signals. If they occur, it will handle them
+and automatically shut down the application by using `QCoreApplication::quit`.
+
+@note If you register for a "quit-like" signal manually, your own handling will be prefered, and ctrlSignal() gets emitted, instead
+of shutting down the app.
+
+@accessors{
+ @readAc{isAutoQuitActive()}
+ @writeAc{setAutoQuitActive()}
+ @notifyAc{autoQuitActiveChanged()}
+}
+
+@sa QCtrlSignalHandler::ctrlSignal, QCtrlSignalHandler::registerForSignal
+*/
+
+/*!
+@fn QCtrlSignalHandler::ctrlSignal
+
+@param signal The CTRL-Signal that was triggered
+
+It is only emitted for manually registered signals, not for others. It is independent of the autoQuitActive property.
+
+@note This signal will be emitted for QCtrlSignalHandler::SigInt and QCtrlSignalHandler::SigTerm as well, even though they have their
+own signals. For those two, both signals will be emitted.
+
+@sa QCtrlSignalHandler::CommonSignals, QCtrlSignalHandler::registerForSignal, QCtrlSignalHandler::sigInt, QCtrlSignalHandler::sigTerm
+*/
+
+/*!
+@fn QCtrlSignalHandler::sigInt
+
+It is only emitted for manually registered signals, not for others. It is independent of the autoQuitActive property.
+
+@note This signal will be emitted alongsite QCtrlSignalHandler::ctrlSignal. You can catch SigInt on any of this two
+
+@sa QCtrlSignalHandler::registerForSignal, QCtrlSignalHandler::ctrlSignal, QCtrlSignalHandler::sigTerm
+*/
+
+/*!
+@fn QCtrlSignalHandler::sigTerm
+
+It is only emitted for manually registered signals, not for others. It is independent of the autoQuitActive property.
+
+@note This signal will be emitted alongsite QCtrlSignalHandler::ctrlSignal. You can catch SigInt on any of this two
+
+@sa QCtrlSignalHandler::registerForSignal, QCtrlSignalHandler::ctrlSignal, QCtrlSignalHandler::sigInt
+*/
