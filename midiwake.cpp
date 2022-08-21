@@ -1,5 +1,6 @@
 #include "inhibitors.h"
 #include "settings_dialog.h"
+#include "about_dialog.h"
 #include <alsa/asoundlib.h>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
@@ -35,6 +36,7 @@ private:
     void processEventFromHardware(snd_seq_event_t *event);
     void setInhibited(bool inh);
     void openSettingsDialog();
+    void openAboutDialog();
 
 protected:
     void sequencerNotified(QSocketDescriptor fd, QSocketNotifier::Type type);
@@ -48,6 +50,7 @@ private:
     QTimer *m_deinhibitTimer = nullptr;
     QSystemTrayIcon *m_trayIcon = nullptr;
     SettingsDialog *m_settingsDialog = nullptr;
+    AboutDialog *m_aboutDialog = nullptr;
     QSettings *m_settings = nullptr;
 };
 
@@ -96,8 +99,10 @@ bool Application::init()
     QMenu *trayMenu = new QMenu;
     trayIcon->setContextMenu(trayMenu);
     QAction *settingsAction = trayMenu->addAction(tr("Settings"));
+    QAction *aboutAction = trayMenu->addAction(tr("About"));
     QAction *quitAction = trayMenu->addAction(tr("Quit"));
     QObject::connect(settingsAction, &QAction::triggered, this, &Application::openSettingsDialog);
+    QObject::connect(aboutAction, &QAction::triggered, this, &Application::openAboutDialog);
     QObject::connect(quitAction, &QAction::triggered, this, &QCoreApplication::quit);
 
     return true;
@@ -318,6 +323,18 @@ void Application::openSettingsDialog()
         QObject::connect(
             dlg, &SettingsDialog::wakeDurationChanged,
             this, [this](int value) { m_deinhibitTimer->setInterval(1000 * 60 * value); });
+    }
+
+    dlg->show();
+}
+
+void Application::openAboutDialog()
+{
+    AboutDialog *dlg = m_aboutDialog;
+
+    if (!dlg) {
+        dlg = new AboutDialog();
+        m_aboutDialog = dlg;
     }
 
     dlg->show();

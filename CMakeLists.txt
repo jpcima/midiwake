@@ -43,6 +43,9 @@ add_executable(midiwake
   "settings_dialog.cpp"
   "settings_dialog.h"
   "settings_dialog.ui"
+  "about_dialog.cpp"
+  "about_dialog.h"
+  "about_dialog.ui"
   "resources.qrc")
 target_compile_definitions(midiwake PRIVATE
   "APPLICATION_VERSION=\"${PROJECT_VERSION}\""
