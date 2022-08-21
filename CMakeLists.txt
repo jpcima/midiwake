@@ -9,9 +9,12 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+set(MIDIWAKE_QT Qt5 CACHE STRING "Which Qt package to build against")
+set_property(CACHE MIDIWAKE_QT PROPERTY STRINGS "Qt5" "Qt6")
+
 find_package(PkgConfig)
 pkg_check_modules(alsa "alsa" REQUIRED IMPORTED_TARGET)
-find_package(Qt5 COMPONENTS Widgets DBus Core REQUIRED)
+find_package(${MIDIWAKE_QT} COMPONENTS Widgets DBus Core REQUIRED)
 
 ###
 add_library(QCtrlSignals STATIC
@@ -33,7 +36,7 @@ target_include_directories(QCtrlSignals PUBLIC
 target_compile_definitions(QCtrlSignals PUBLIC
   "Q_CTRL_SIGNALS_EXPORT=")
 target_link_libraries(QCtrlSignals PRIVATE
-  Qt5::Core)
+  ${MIDIWAKE_QT}::Core)
 
 ###
 add_executable(midiwake
@@ -54,8 +57,8 @@ target_compile_definitions(midiwake PRIVATE
   "APPLICATION_BUNDLE_IDENTIFIER=\"${APPLICATION_BUNDLE_IDENTIFIER}\"")
 target_link_libraries(midiwake PRIVATE
   QCtrlSignals
-  Qt5::Widgets
-  Qt5::DBus
-  Qt5::Core
+  ${MIDIWAKE_QT}::Widgets
+  ${MIDIWAKE_QT}::DBus
+  ${MIDIWAKE_QT}::Core
   PkgConfig::alsa)
 install(TARGETS midiwake)
