@@ -42,6 +42,7 @@ private:
     void setInhibited(bool inh);
     void openSettingsDialog();
     void openAboutDialog();
+    void updateStatusDisplay(bool active);
     static QString getAutoStartFileLocation();
     static bool isAutoStartFilePresent();
     static void installAutoStartFile();
@@ -114,6 +115,8 @@ bool Application::init()
     QObject::connect(settingsAction, &QAction::triggered, this, &Application::openSettingsDialog);
     QObject::connect(aboutAction, &QAction::triggered, this, &Application::openAboutDialog);
     QObject::connect(quitAction, &QAction::triggered, this, &QCoreApplication::quit);
+
+    updateStatusDisplay(false);
 
     return true;
 }
@@ -324,6 +327,8 @@ void Application::setInhibited(bool inh)
     if (m_inhibit == inh)
         return;
 
+    updateStatusDisplay(inh);
+
     if (inh) {
         QString reason = tr("Playing hardware MIDI.");
         m_inhibitor->inhibit(reason);
@@ -365,6 +370,18 @@ void Application::openAboutDialog()
     }
 
     dlg->show();
+}
+
+void Application::updateStatusDisplay(bool active)
+{
+    if (active) {
+        m_trayIcon->setToolTip(tr("%1 status: active").arg(APPLICATION_DISPLAY_NAME));
+        //TODO set active icon...
+    }
+    else {
+        m_trayIcon->setToolTip(tr("%1 status: inactive").arg(APPLICATION_DISPLAY_NAME));
+        //TODO set inactive icon...
+    }
 }
 
 QString Application::getAutoStartFileLocation()
