@@ -16,6 +16,8 @@ find_package(PkgConfig)
 pkg_check_modules(alsa "alsa" REQUIRED IMPORTED_TARGET)
 find_package(${MIDIWAKE_QT} COMPONENTS Widgets DBus Network Core REQUIRED)
 
+include(GNUInstallDirs)
+
 ####
 # rpkg version
 
@@ -99,4 +101,5 @@ target_link_libraries(midiwake PRIVATE
   ${MIDIWAKE_QT}::DBus
   ${MIDIWAKE_QT}::Core
   PkgConfig::alsa)
-install(TARGETS midiwake)
+install(TARGETS midiwake DESTINATION "${CMAKE_INSTALL_BINDIR}")
+install(FILES "midiwake.desktop" DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")

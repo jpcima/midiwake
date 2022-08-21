@@ -38,6 +38,7 @@ tar -C thirdparty -xf %{SOURCE2}
 
 %files
 %{_bindir}/midiwake
+%{_datadir}/applications/midiwake.desktop
 
 %changelog
 {{{ git_dir_changelog }}}

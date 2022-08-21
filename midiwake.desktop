@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=MidiWake
+Type=Application
+TryExec=midiwake
+Exec=midiwake
+Icon=midiwake
+Terminal=false
+Categories=AudioVideo;Audio;Midi;
