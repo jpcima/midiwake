@@ -107,9 +107,9 @@ bool Application::init()
 
     QMenu *trayMenu = new QMenu;
     trayIcon->setContextMenu(trayMenu);
-    QAction *settingsAction = trayMenu->addAction(tr("Settings"));
-    QAction *aboutAction = trayMenu->addAction(tr("About"));
-    QAction *quitAction = trayMenu->addAction(tr("Quit"));
+    QAction *settingsAction = trayMenu->addAction(QIcon::fromTheme("preferences-system"), tr("Settings"));
+    QAction *aboutAction = trayMenu->addAction(QIcon::fromTheme("help-about"), tr("About"));
+    QAction *quitAction = trayMenu->addAction(QIcon::fromTheme("application-exit"), tr("Quit"));
     QObject::connect(settingsAction, &QAction::triggered, this, &Application::openSettingsDialog);
     QObject::connect(aboutAction, &QAction::triggered, this, &Application::openAboutDialog);
     QObject::connect(quitAction, &QAction::triggered, this, &QCoreApplication::quit);
