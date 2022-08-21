@@ -8,7 +8,7 @@ struct SettingsDialog::Impl
     QTimer *m_timer = nullptr;
 };
 
-SettingsDialog::SettingsDialog(QSettings *settings, QWidget *parent)
+SettingsDialog::SettingsDialog(QSettings *settings, bool hasAutostart, QWidget *parent)
     : QDialog(parent), m_impl(new Impl)
 {
     m_impl->m_settings = settings;
@@ -23,6 +23,11 @@ SettingsDialog::SettingsDialog(QSettings *settings, QWidget *parent)
             m_impl->m_settings->setValue("wake-duration", value);
             emit wakeDurationChanged(value);
         });
+
+    ui.chkAutostart->setChecked(hasAutostart);
+    QObject::connect(
+        ui.chkAutostart, &QCheckBox::toggled,
+        this, &SettingsDialog::autostartChanged);
 }
 
 SettingsDialog::~SettingsDialog()

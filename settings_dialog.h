@@ -7,11 +7,12 @@ class SettingsDialog : public QDialog {
     Q_OBJECT
 
 public:
-    SettingsDialog(QSettings *settings, QWidget *parent = nullptr);
+    SettingsDialog(QSettings *settings, bool hasAutostart, QWidget *parent = nullptr);
     ~SettingsDialog();
 
 signals:
     void wakeDurationChanged(int value);
+    void autostartChanged(bool value);
 
 private:
     struct Impl;

@@ -9,6 +9,10 @@
 #include <QtCore/QSocketNotifier>
 #include <QtCore/QTimer>
 #include <QtCore/QSettings>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QStandardPaths>
 #include <QCtrlSignals>
 #include <qsingleinstance.h>
 #include <vector>
@@ -38,6 +42,10 @@ private:
     void setInhibited(bool inh);
     void openSettingsDialog();
     void openAboutDialog();
+    static QString getAutoStartFileLocation();
+    static bool isAutoStartFilePresent();
+    static void installAutoStartFile();
+    static void removeAutoStartFile();
 
 protected:
     void sequencerNotified(QSocketDescriptor fd, QSocketNotifier::Type type);
@@ -318,12 +326,16 @@ void Application::openSettingsDialog()
     SettingsDialog *dlg = m_settingsDialog;
 
     if (!dlg) {
-        dlg = new SettingsDialog(m_settings);
+        dlg = new SettingsDialog(m_settings, isAutoStartFilePresent());
         m_settingsDialog = dlg;
 
         QObject::connect(
             dlg, &SettingsDialog::wakeDurationChanged,
             this, [this](int value) { m_deinhibitTimer->setInterval(1000 * 60 * value); });
+
+        QObject::connect(
+            dlg, &SettingsDialog::autostartChanged,
+            this, [this](bool value) { if (value) installAutoStartFile(); else removeAutoStartFile(); });
     }
 
     dlg->show();
@@ -339,6 +351,51 @@ void Application::openAboutDialog()
     }
 
     dlg->show();
+}
+
+QString Application::getAutoStartFileLocation()
+{
+    QString path = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
+    if (!path.isEmpty())
+        path.append("/autostart/" APPLICATION_BUNDLE_IDENTIFIER ".desktop");
+    return path;
+}
+
+bool Application::isAutoStartFilePresent()
+{
+    return QFile(getAutoStartFileLocation()).exists();
+}
+
+void Application::installAutoStartFile()
+{
+    QString path = getAutoStartFileLocation();
+    QFileInfo(path).dir().mkpath(".");
+
+    const char contents[] =
+"[Desktop Entry]\n"
+"Name=" APPLICATION_DISPLAY_NAME "\n"
+"Type=Application\n"
+"Exec=" APPLICATION_NAME "\n"
+"Terminal=false\n";
+    size_t length = sizeof(contents) - 1;
+
+    QFile file(path);
+    if (!file.open(QFile::WriteOnly)) {
+        fprintf(stderr, "Could not open the autostart file for writing.\n");
+        return;
+    }
+
+    if (file.write(contents, length) != (qint64)length || !file.flush()) {
+        fprintf(stderr, "Could not write the autostart file.\n");
+        QFile::remove(path);
+        return;
+    }
+}
+
+void Application::removeAutoStartFile()
+{
+    QString path = getAutoStartFileLocation();
+    QFile::remove(path);
 }
 
 //------------------------------------------------------------------------------
