@@ -10,6 +10,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/QSettings>
 #include <QCtrlSignals>
+#include <qsingleinstance.h>
 #include <vector>
 #include <memory>
 #include <cstdio>
@@ -344,10 +345,14 @@ void Application::openAboutDialog()
 int main(int argc, char *argv[])
 {
     Application app(argc, argv);
+    QSingleInstance instance;
 
-    if (!app.init())
-        return 1;
+    instance.setStartupFunction([&app]() -> int {
+        if (!app.init())
+            return 1;
+        return 0;
+    });
 
-    int ret = app.exec();
+    int ret = instance.singleExec();
     return ret;
 }

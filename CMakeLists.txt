@@ -14,10 +14,10 @@ set_property(CACHE MIDIWAKE_QT PROPERTY STRINGS "Qt5" "Qt6")
 
 find_package(PkgConfig)
 pkg_check_modules(alsa "alsa" REQUIRED IMPORTED_TARGET)
-find_package(${MIDIWAKE_QT} COMPONENTS Widgets DBus Core REQUIRED)
+find_package(${MIDIWAKE_QT} COMPONENTS Widgets DBus Network Core REQUIRED)
 
 ###
-add_library(QCtrlSignals STATIC
+add_library(QCtrlSignals STATIC EXCLUDE_FROM_ALL
   "thirdparty/QCtrlSignals/src/qctrlsignalhandler.cpp"
   "thirdparty/QCtrlSignals/src/qctrlsignalhandler.h"
   "thirdparty/QCtrlSignals/src/qctrlsignalhandler_p.h"
@@ -39,6 +39,20 @@ target_link_libraries(QCtrlSignals PRIVATE
   ${MIDIWAKE_QT}::Core)
 
 ###
+add_library(QSingleInstance STATIC EXCLUDE_FROM_ALL
+  "thirdparty/QSingleInstance/QSingleInstance/clientinstance.cpp"
+  "thirdparty/QSingleInstance/QSingleInstance/clientinstance.h"
+  "thirdparty/QSingleInstance/QSingleInstance/qsingleinstance.cpp"
+  "thirdparty/QSingleInstance/QSingleInstance/qsingleinstance.h"
+  "thirdparty/QSingleInstance/QSingleInstance/qsingleinstance_p.cpp"
+  "thirdparty/QSingleInstance/QSingleInstance/qsingleinstance_p.h")
+target_include_directories(QSingleInstance PUBLIC
+  "thirdparty/QSingleInstance/QSingleInstance")
+target_link_libraries(QSingleInstance PRIVATE
+  ${MIDIWAKE_QT}::Network
+  ${MIDIWAKE_QT}::Core)
+
+###
 add_executable(midiwake
   "midiwake.cpp"
   "inhibitors.cpp"
@@ -57,6 +71,7 @@ target_compile_definitions(midiwake PRIVATE
   "APPLICATION_BUNDLE_IDENTIFIER=\"${APPLICATION_BUNDLE_IDENTIFIER}\"")
 target_link_libraries(midiwake PRIVATE
   QCtrlSignals
+  QSingleInstance
   ${MIDIWAKE_QT}::Widgets
   ${MIDIWAKE_QT}::DBus
   ${MIDIWAKE_QT}::Core
