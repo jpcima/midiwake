@@ -1,0 +1,3 @@
+[submodule "thirdparty/QCtrlSignals"]
+	path = thirdparty/QCtrlSignals
+	url = https://github.com/Skycoder42/QCtrlSignals.git
