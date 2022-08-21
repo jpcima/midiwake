@@ -55,3 +55,4 @@ target_link_libraries(midiwake PRIVATE
   Qt5::DBus
   Qt5::Core
   PkgConfig::alsa)
+install(TARGETS midiwake)
