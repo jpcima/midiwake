@@ -78,10 +78,11 @@ bool Application::init()
         settings->setValue("wake-duration", 15);
 
     m_inhibitor = Inhibitor::createInhibitor(this);
-    //fprintf(stderr, "Inhibitor: %s\n", m_inhibitor->getIdentifier().toUtf8().data());
-    if (!m_inhibitor->isValid()) {
+    if (m_inhibitor->isValid())
+        fprintf(stderr, "Using screen saver inhibitor: %s\n",
+                m_inhibitor->getIdentifier().toUtf8().data());
+    else
         fprintf(stderr, "No screen saver inhibitor is available.\n");
-    }
 
     m_deinhibitTimer = new QTimer(this);
     m_deinhibitTimer->setInterval(1000 * 60 * settings->value("wake-duration").toInt());
@@ -129,6 +130,8 @@ bool Application::initAlsaMidi()
 
     m_seq.reset(seq);
 
+    fprintf(stderr, "Registered ALSA client.\n");
+
     int pollType = POLLIN;
     QSocketNotifier::Type notifyType = QSocketNotifier::Read;
 
@@ -174,6 +177,9 @@ bool Application::initAlsaMidi()
         return false;
     }
 
+    fprintf(stderr, "Created client port: %d:%d\n",
+            snd_seq_port_info_get_client(portInfo), snd_seq_port_info_get_port(portInfo));
+
     snd_seq_port_subscribe_t *sub = nullptr;
     snd_seq_port_subscribe_alloca(&sub);
     const snd_seq_addr_t src{SND_SEQ_CLIENT_SYSTEM, SND_SEQ_PORT_SYSTEM_ANNOUNCE};
@@ -183,6 +189,8 @@ bool Application::initAlsaMidi()
         fprintf(stderr, "Cannot subscribe to the system port.\n");
         return false;
     }
+
+    fprintf(stderr, "Subscribed to system announcements.\n");
 
     snd_seq_client_info_t *clientInfo = nullptr;
     snd_seq_client_info_alloca(&clientInfo);
@@ -196,7 +204,7 @@ bool Application::initAlsaMidi()
 
 void Application::onQuit()
 {
-    //fprintf(stderr, "Quitting...\n");
+    fprintf(stderr, "Quitting\n");
 
     setInhibited(false);
     m_deinhibitTimer->stop();
@@ -223,6 +231,7 @@ void Application::sequencerNotified(QSocketDescriptor fd, QSocketNotifier::Type 
             switch (ev->type) {
             case SND_SEQ_EVENT_CLIENT_START: {
                 int clientId = ev->data.addr.client;
+                fprintf(stderr, "New client has arrived: %d\n", clientId);
                 processNewAlsaClient(clientId);
                 break;
             }
@@ -244,9 +253,12 @@ void Application::processNewAlsaClient(int clientId)
     snd_seq_client_info_alloca(&clientInfo);
 
     if (snd_seq_get_any_client_info(seq, clientId, clientInfo) < 0) {
-        fprintf(stderr, "Cannot get client information: %d.\n", clientId);
+        fprintf(stderr, "Cannot get client information: %d\n", clientId);
         return;
     }
+
+    fprintf(stderr, "Processing client: (%d) %s\n",
+            clientId, snd_seq_client_info_get_name(clientInfo));
 
     snd_seq_port_info_t *portInfo = nullptr;
     snd_seq_port_info_alloca(&portInfo);
@@ -274,7 +286,7 @@ void Application::processNewAlsaClient(int clientId)
 
         // subscribe this port we found
 
-        //fprintf(stderr, "Found port %d:%d\n", clientId, portId);
+        fprintf(stderr, "Found hardware output: %d:%d\n", clientId, portId);
 
         snd_seq_port_subscribe_t *sub = nullptr;
         snd_seq_port_subscribe_alloca(&sub);
@@ -290,6 +302,8 @@ void Application::processNewAlsaClient(int clientId)
         snd_seq_port_subscribe_set_dest(sub, &dst);
         if (snd_seq_subscribe_port(seq, sub) < 0)
             fprintf(stderr, "Cannot subscribe to the hardware port.\n");
+
+        fprintf(stderr, "Subscribed hardware output: %d:%d\n", clientId, portId);
     }
 }
 
