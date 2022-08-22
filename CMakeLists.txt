@@ -105,8 +105,13 @@ target_link_libraries(midiwake PRIVATE
   ${MIDIWAKE_QT}::DBus
   ${MIDIWAKE_QT}::Core
   PkgConfig::alsa)
-qt_create_translation(MIDIWAKE_QM_FILES "sources"
-  "resources/i18n/midiwake_fr.ts")
+if(MIDIWAKE_QT STREQUAL "Qt5")
+  qt5_create_translation(MIDIWAKE_QM_FILES "sources"
+    "resources/i18n/midiwake_fr.ts")
+else()
+  qt_create_translation(MIDIWAKE_QM_FILES "sources"
+    "resources/i18n/midiwake_fr.ts")
+endif()
 #
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/midiwake_i18n.qrc" "<RCC><qresource prefix=\"/i18n/\">")
 foreach(_qm IN LISTS MIDIWAKE_QM_FILES)
