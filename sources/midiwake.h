@@ -6,7 +6,6 @@
 #include <QtCore/QSettings>
 #include <QtCore/QTranslator>
 #include <QtCore/QSocketNotifier>
-#include <QtCore/QSocketDescriptor>
 #include <alsa/asoundlib.h>
 #include <memory>
 class Inhibitor;
@@ -47,7 +46,11 @@ private:
     static void removeAutoStartFile();
 
 protected:
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+    void sequencerNotified(int fd);
+#else
     void sequencerNotified(QSocketDescriptor fd, QSocketNotifier::Type type);
+#endif
 
 private:
     snd_seq_u m_seq;
