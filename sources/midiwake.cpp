@@ -11,7 +11,7 @@
 #include <QtCore/QStandardPaths>
 #include <QtCore/QLibraryInfo>
 #include <QCtrlSignals>
-#include <qsingleinstance.h>
+#include <QSingleInstance>
 #include <vector>
 #include <cstdio>
 
