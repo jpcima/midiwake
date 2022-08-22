@@ -14,7 +14,7 @@ set_property(CACHE MIDIWAKE_QT PROPERTY STRINGS "Qt5" "Qt6")
 
 find_package(PkgConfig)
 pkg_check_modules(alsa "alsa" REQUIRED IMPORTED_TARGET)
-find_package(${MIDIWAKE_QT} COMPONENTS Widgets DBus Network Core REQUIRED)
+find_package(${MIDIWAKE_QT} COMPONENTS Widgets DBus Network Core LinguistTools REQUIRED)
 
 include(GNUInstallDirs)
 
@@ -102,5 +102,18 @@ target_link_libraries(midiwake PRIVATE
   ${MIDIWAKE_QT}::DBus
   ${MIDIWAKE_QT}::Core
   PkgConfig::alsa)
+qt_create_translation(MIDIWAKE_QM_FILES "sources"
+  "resources/i18n/midiwake_fr.ts")
+#
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/midiwake_i18n.qrc" "<RCC><qresource prefix=\"/i18n/\">")
+foreach(_qm IN LISTS MIDIWAKE_QM_FILES)
+  get_filename_component(_baseqm "${_qm}" NAME)
+  file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/midiwake_i18n.qrc" "<file>${_baseqm}</file>")
+endforeach()
+file(APPEND "${CMAKE_CURRENT_BINARY_DIR}/midiwake_i18n.qrc" "</qresource></RCC>")
+#
+target_sources(midiwake PRIVATE
+  "${CMAKE_CURRENT_BINARY_DIR}/midiwake_i18n.qrc"
+  ${MIDIWAKE_QM_FILES})
 install(TARGETS midiwake DESTINATION "${CMAKE_INSTALL_BINDIR}")
 install(FILES "midiwake.desktop" DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")

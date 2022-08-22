@@ -18,10 +18,13 @@
 //------------------------------------------------------------------------------
 bool Application::init()
 {
-    // QTranslator *translator = new QTranslator(this);
-    // translator->load(QLocale(), "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    // //TODO
-    // installTranslator(translator);
+    QTranslator *translatorApp = new QTranslator(this);
+    if (translatorApp->load(QLocale(), "midiwake", "_", ":/i18n")) {
+        installTranslator(translatorApp);
+        QTranslator *translatorQt = new QTranslator(this);
+        if (translatorQt->load(QLocale(), "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+            installTranslator(translatorQt);
+    }
 
     setQuitOnLastWindowClosed(false);
 
@@ -292,7 +295,7 @@ void Application::setInhibited(bool inh)
     updateStatusDisplay(inh);
 
     if (inh) {
-        QString reason = tr("Playing hardware MIDI.");
+        QString reason = tr("Using hardware MIDI.");
         m_inhibitor->inhibit(reason);
     }
     else {

@@ -59,7 +59,7 @@
         </font>
        </property>
        <property name="text">
-        <string>(Name)</string>
+        <string notr="true">(Name)</string>
        </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>
@@ -72,7 +72,7 @@
      <item>
       <widget class="QLabel" name="txtVersion">
        <property name="text">
-        <string>(Version)</string>
+        <string notr="true">(Version)</string>
        </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>

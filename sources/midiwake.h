@@ -61,5 +61,4 @@ private:
     QSettings *m_settings = nullptr;
     QIcon m_mainIcon;
     QIcon m_activeIcon;
-    //QTranslator *m_translator = nullptr;
 };
