@@ -1,73 +1,28 @@
+#include "midiwake.h"
 #include "inhibitors.h"
 #include "settings_dialog.h"
 #include "about_dialog.h"
-#include <alsa/asoundlib.h>
-#include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
-#include <QtWidgets/QSystemTrayIcon>
 #include <QtWidgets/QMenu>
 #include <QtCore/QSocketNotifier>
-#include <QtCore/QTimer>
-#include <QtCore/QSettings>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QStandardPaths>
+#include <QtCore/QLibraryInfo>
 #include <QCtrlSignals>
 #include <qsingleinstance.h>
 #include <vector>
-#include <memory>
 #include <cstdio>
 
-#define DEFINE_AUTO_PTR(aptr, styp, freefn)                      \
-    struct aptr##_deleter {                                      \
-        void operator()(styp *x) const noexcept { (freefn)(x); } \
-    }; using aptr = std::unique_ptr<styp, aptr##_deleter>
-
 //------------------------------------------------------------------------------
-DEFINE_AUTO_PTR(snd_seq_u, snd_seq_t, snd_seq_close);
-
-//------------------------------------------------------------------------------
-class Application : public QApplication {
-public:
-    using QApplication::QApplication;
-
-    bool init();
-
-private:
-    bool initAlsaMidi();
-    void onQuit();
-    void processNewAlsaClient(int clientId);
-    void processEventFromHardware(snd_seq_event_t *event);
-    void setInhibited(bool inh);
-    void openSettingsDialog();
-    void openAboutDialog();
-    void updateStatusDisplay(bool active);
-    static QString getAutoStartFileLocation();
-    static bool isAutoStartFilePresent();
-    static void installAutoStartFile();
-    static void removeAutoStartFile();
-
-protected:
-    void sequencerNotified(QSocketDescriptor fd, QSocketNotifier::Type type);
-
-private:
-    snd_seq_u m_seq;
-    int m_port = -1;
-    bool m_inhibit = false;
-    Inhibitor *m_inhibitor = nullptr;
-    std::vector<QSocketNotifier *> m_notifiers;
-    QTimer *m_deinhibitTimer = nullptr;
-    QSystemTrayIcon *m_trayIcon = nullptr;
-    SettingsDialog *m_settingsDialog = nullptr;
-    AboutDialog *m_aboutDialog = nullptr;
-    QSettings *m_settings = nullptr;
-    QIcon m_mainIcon;
-    QIcon m_activeIcon;
-};
-
 bool Application::init()
 {
+    // QTranslator *translator = new QTranslator(this);
+    // translator->load(QLocale(), "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    // //TODO
+    // installTranslator(translator);
+
     setQuitOnLastWindowClosed(false);
 
     setApplicationVersion(APPLICATION_VERSION);

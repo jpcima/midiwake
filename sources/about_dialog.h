@@ -4,6 +4,8 @@
 #include <memory>
 
 class AboutDialog : public QDialog {
+    Q_OBJECT
+
 public:
     AboutDialog(const QIcon &icon, QWidget *parent = nullptr);
     ~AboutDialog();

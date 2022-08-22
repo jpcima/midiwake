@@ -80,6 +80,7 @@ target_link_libraries(QSingleInstance PRIVATE
 ###
 add_executable(midiwake
   "sources/midiwake.cpp"
+  "sources/midiwake.h"
   "sources/inhibitors.cpp"
   "sources/inhibitors.h"
   "sources/settings_dialog.cpp"
