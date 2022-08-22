@@ -45,6 +45,8 @@ tar -C thirdparty -xf %{SOURCE2}
 %cmake_install
 
 %files
+%doc README.md
+%license LICENSE
 %{_bindir}/midiwake
 %{_datadir}/applications/midiwake.desktop
 %{_datadir}/pixmaps/midiwake.png
