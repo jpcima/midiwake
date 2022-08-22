@@ -19,8 +19,15 @@ Source2:    {{{ git_pack dir_name=QSingleInstance path=thirdparty/QSingleInstanc
 BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: alsa-lib-devel
+%if 0%{?suse_version}
+BuildRequires: libQt5Widgets-devel
+BuildRequires: libQt5Network-devel
+BuildRequires: libQt5DBus-devel
+BuildRequires: libqt5-linguist-devel
+%else
 BuildRequires: qt5-qtbase-devel
 BuildRequires: qt5-linguist
+%endif
 
 %description
 A utility to block the screen saver during MIDI activity
