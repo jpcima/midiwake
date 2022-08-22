@@ -104,8 +104,8 @@ bool Application::init()
         return false;
     }
 
-    m_mainIcon = QIcon(":/resources/icons/icon.png");
-    m_activeIcon = QIcon(":/resources/icons/icon-active.png");
+    m_mainIcon = QIcon(":/icons/icon.png");
+    m_activeIcon = QIcon(":/icons/icon-active.png");
 
     setWindowIcon(m_mainIcon);
 

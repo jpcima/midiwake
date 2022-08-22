@@ -79,16 +79,16 @@ target_link_libraries(QSingleInstance PRIVATE
 
 ###
 add_executable(midiwake
-  "midiwake.cpp"
-  "inhibitors.cpp"
-  "inhibitors.h"
-  "settings_dialog.cpp"
-  "settings_dialog.h"
-  "settings_dialog.ui"
-  "about_dialog.cpp"
-  "about_dialog.h"
-  "about_dialog.ui"
-  "resources.qrc")
+  "sources/midiwake.cpp"
+  "sources/inhibitors.cpp"
+  "sources/inhibitors.h"
+  "sources/settings_dialog.cpp"
+  "sources/settings_dialog.h"
+  "sources/settings_dialog.ui"
+  "sources/about_dialog.cpp"
+  "sources/about_dialog.h"
+  "sources/about_dialog.ui"
+  "resources/resources.qrc")
 target_compile_definitions(midiwake PRIVATE
   "APPLICATION_VERSION=\"${PROJECT_VERSION}\""
   "APPLICATION_NAME=\"${PROJECT_NAME}\""
