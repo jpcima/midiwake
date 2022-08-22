@@ -20,6 +20,7 @@ BuildRequires: cmake
 BuildRequires: gcc-c++
 BuildRequires: alsa-lib-devel
 BuildRequires: qt5-qtbase-devel
+BuildRequires: qt5-linguist
 
 %description
 A utility to block the screen saver during MIDI activity
