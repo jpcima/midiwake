@@ -167,7 +167,6 @@ Inhibitor *Inhibitor::createInhibitor(QObject *parent)
     delete inh;
     inh = nullptr;
 
-
     inh = new NullInhibitor(parent);
     return inh;
 }

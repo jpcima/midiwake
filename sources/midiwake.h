@@ -39,7 +39,7 @@ private:
     void setInhibited(bool inh);
     void openSettingsDialog();
     void openAboutDialog();
-    void updateStatusDisplay(bool active);
+    void updateStatusDisplay(int status); // 0: active, 1: inactive, -1: error
     static QString getAutoStartFileLocation();
     static bool isAutoStartFilePresent();
     static void installAutoStartFile();
@@ -65,4 +65,5 @@ private:
     QSettings *m_settings = nullptr;
     QIcon m_mainIcon;
     QIcon m_activeIcon;
+    QIcon m_errorIcon;
 };

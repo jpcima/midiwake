@@ -64,6 +64,7 @@ bool Application::init()
 
     m_mainIcon = QIcon(":/icons/icon.png");
     m_activeIcon = QIcon(":/icons/icon-active.png");
+    m_errorIcon = QIcon(":/icons/icon-error.png");
 
     setWindowIcon(m_mainIcon);
 
@@ -81,7 +82,7 @@ bool Application::init()
     QObject::connect(aboutAction, &QAction::triggered, this, &Application::openAboutDialog);
     QObject::connect(quitAction, &QAction::triggered, this, &QCoreApplication::quit);
 
-    updateStatusDisplay(false);
+    updateStatusDisplay(m_inhibitor->isValid() ? 0 : -1);
 
     return true;
 }
@@ -287,26 +288,29 @@ void Application::processEventFromHardware(snd_seq_event_t *event)
     }
 
     setInhibited(true);
-
-    m_deinhibitTimer->start();
 }
 
 void Application::setInhibited(bool inh)
 {
-    if (m_inhibit == inh)
+    if (!m_inhibitor->isValid())
         return;
 
-    updateStatusDisplay(inh);
+    if (inh)
+        m_deinhibitTimer->start();
 
-    if (inh) {
-        QString reason = tr("Using hardware MIDI.");
-        m_inhibitor->inhibit(reason);
-    }
-    else {
-        m_inhibitor->uninhibit();
-    }
+    if (m_inhibit != inh) {
+        updateStatusDisplay(inh);
 
-    m_inhibit = inh;
+        if (inh) {
+            QString reason = tr("Using hardware MIDI.");
+            m_inhibitor->inhibit(reason);
+        }
+        else {
+            m_inhibitor->uninhibit();
+        }
+
+        m_inhibit = inh;
+    }
 }
 
 void Application::openSettingsDialog()
@@ -341,15 +345,19 @@ void Application::openAboutDialog()
     dlg->show();
 }
 
-void Application::updateStatusDisplay(bool active)
+void Application::updateStatusDisplay(int status)
 {
-    if (active) {
+    if (status > 0) {
         m_trayIcon->setToolTip(tr("%1 status: active").arg(APPLICATION_DISPLAY_NAME));
         m_trayIcon->setIcon(m_activeIcon);
     }
-    else {
+    else if (status == 0) {
         m_trayIcon->setToolTip(tr("%1 status: inactive").arg(APPLICATION_DISPLAY_NAME));
         m_trayIcon->setIcon(m_mainIcon);
+    }
+    else {
+        m_trayIcon->setToolTip(tr("%1 status: error").arg(APPLICATION_DISPLAY_NAME));
+        m_trayIcon->setIcon(m_errorIcon);
     }
 }
 
