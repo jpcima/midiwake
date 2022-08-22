@@ -117,3 +117,7 @@ target_sources(midiwake PRIVATE
   ${MIDIWAKE_QM_FILES})
 install(TARGETS midiwake DESTINATION "${CMAKE_INSTALL_BINDIR}")
 install(FILES "midiwake.desktop" DESTINATION "${CMAKE_INSTALL_DATADIR}/applications")
+install(FILES
+  "resources/icons/icon.png"
+  DESTINATION "${CMAKE_INSTALL_DATADIR}/pixmaps"
+  RENAME "midiwake.png")

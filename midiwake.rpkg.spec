@@ -39,6 +39,7 @@ tar -C thirdparty -xf %{SOURCE2}
 %files
 %{_bindir}/midiwake
 %{_datadir}/applications/midiwake.desktop
+%{_datadir}/pixmaps/midiwake.png
 
 %changelog
 {{{ git_dir_changelog }}}
