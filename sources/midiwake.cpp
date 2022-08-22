@@ -22,7 +22,12 @@ bool Application::init()
     if (translatorApp->load(QLocale(), "midiwake", "_", ":/i18n")) {
         installTranslator(translatorApp);
         QTranslator *translatorQt = new QTranslator(this);
-        if (translatorQt->load(QLocale(), "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+        QString pathQt = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+#else
+        QString pathQt = QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+#endif
+        if (translatorQt->load(QLocale(), "qt", "_", pathQt))
             installTranslator(translatorQt);
     }
 
