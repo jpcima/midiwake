@@ -6,6 +6,7 @@
 #include <QtCore/QSettings>
 #include <QtCore/QTranslator>
 #include <QtCore/QSocketNotifier>
+#include <QtCore/QSocketDescriptor>
 #include <alsa/asoundlib.h>
 #include <memory>
 class Inhibitor;
