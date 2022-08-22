@@ -32,34 +32,39 @@
         <translation>Impossible d&apos;initialiser ALSA MIDI.</translation>
     </message>
     <message>
-        <location filename="../../sources/midiwake.cpp" line="77"/>
+        <location filename="../../sources/midiwake.cpp" line="78"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
     <message>
-        <location filename="../../sources/midiwake.cpp" line="78"/>
+        <location filename="../../sources/midiwake.cpp" line="79"/>
         <source>About</source>
         <translation>À propos</translation>
     </message>
     <message>
-        <location filename="../../sources/midiwake.cpp" line="79"/>
+        <location filename="../../sources/midiwake.cpp" line="80"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../../sources/midiwake.cpp" line="298"/>
+        <location filename="../../sources/midiwake.cpp" line="305"/>
         <source>Using hardware MIDI.</source>
         <translation>Le matériel MIDI est en cours d&apos;utilisation.</translation>
     </message>
     <message>
-        <location filename="../../sources/midiwake.cpp" line="343"/>
+        <location filename="../../sources/midiwake.cpp" line="351"/>
         <source>%1 status: active</source>
         <translation>Statut de %1 : actif</translation>
     </message>
     <message>
-        <location filename="../../sources/midiwake.cpp" line="347"/>
+        <location filename="../../sources/midiwake.cpp" line="355"/>
         <source>%1 status: inactive</source>
         <translation>Statut de %1 : inactif</translation>
+    </message>
+    <message>
+        <location filename="../../sources/midiwake.cpp" line="359"/>
+        <source>%1 status: error</source>
+        <translation>Statut de %1 : erreur</translation>
     </message>
 </context>
 <context>
