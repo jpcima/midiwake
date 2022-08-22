@@ -189,9 +189,9 @@ void Application::onQuit()
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-void Application::sequencerNotified(int fd)
+void Application::sequencerNotified(int)
 #else
-void Application::sequencerNotified(QSocketDescriptor fd, QSocketNotifier::Type type)
+void Application::sequencerNotified(QSocketDescriptor, QSocketNotifier::Type)
 #endif
 {
     snd_seq_t *seq = m_seq.get();

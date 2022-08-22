@@ -104,7 +104,8 @@ target_link_libraries(midiwake PRIVATE
   ${MIDIWAKE_QT}::Widgets
   ${MIDIWAKE_QT}::DBus
   ${MIDIWAKE_QT}::Core
-  PkgConfig::alsa)
+  PkgConfig::alsa
+  sane-warning-flags)
 if(MIDIWAKE_QT STREQUAL "Qt5")
   qt5_create_translation(MIDIWAKE_QM_FILES "sources"
     "resources/i18n/midiwake_fr.ts")
