@@ -63,6 +63,7 @@ private:
     AboutDialog *m_aboutDialog = nullptr;
     QSettings *m_settings = nullptr;
     QIcon m_mainIcon;
+    QIcon m_activeIcon;
 };
 
 bool Application::init()
@@ -104,6 +105,7 @@ bool Application::init()
     }
 
     m_mainIcon = QIcon(":/resources/icons/icon.png");
+    m_activeIcon = QIcon(":/resources/icons/icon-active.png");
 
     setWindowIcon(m_mainIcon);
 
@@ -381,11 +383,11 @@ void Application::updateStatusDisplay(bool active)
 {
     if (active) {
         m_trayIcon->setToolTip(tr("%1 status: active").arg(APPLICATION_DISPLAY_NAME));
-        //TODO set active icon...
+        m_trayIcon->setIcon(m_activeIcon);
     }
     else {
         m_trayIcon->setToolTip(tr("%1 status: inactive").arg(APPLICATION_DISPLAY_NAME));
-        //TODO set inactive icon...
+        m_trayIcon->setIcon(m_mainIcon);
     }
 }
 
