@@ -30,7 +30,13 @@ BuildRequires: qt5-linguist
 %endif
 
 %description
-A utility to block the screen saver during MIDI activity
+This program shows up in the notification area, and it listens for output
+produced by hardware MIDI devices, such as a synthesizer keyboard.
+
+While the device is being played with, the program prevents the desktop from
+entering idle mode, which might lock the session or activate the screen saver.
+For instance, one can practice a piece of music on screen without risks of
+interruption.
 
 %prep
 {{{ git_dir_setup_macro }}}
