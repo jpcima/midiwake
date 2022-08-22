@@ -62,6 +62,7 @@ private:
     SettingsDialog *m_settingsDialog = nullptr;
     AboutDialog *m_aboutDialog = nullptr;
     QSettings *m_settings = nullptr;
+    QIcon m_mainIcon;
 };
 
 bool Application::init()
@@ -102,9 +103,13 @@ bool Application::init()
         return false;
     }
 
+    m_mainIcon = QIcon(":/resources/icons/icon.png");
+
+    setWindowIcon(m_mainIcon);
+
     QSystemTrayIcon *trayIcon = new QSystemTrayIcon;
     m_trayIcon = trayIcon;
-    trayIcon->setIcon(QIcon(":/resources/icon.png"));
+    trayIcon->setIcon(m_mainIcon);
     trayIcon->show();
 
     QMenu *trayMenu = new QMenu;
@@ -365,7 +370,7 @@ void Application::openAboutDialog()
     AboutDialog *dlg = m_aboutDialog;
 
     if (!dlg) {
-        dlg = new AboutDialog();
+        dlg = new AboutDialog(m_mainIcon);
         m_aboutDialog = dlg;
     }
 

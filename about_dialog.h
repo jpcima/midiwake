@@ -1,10 +1,11 @@
 #pragma once
 #include <QtWidgets/QDialog>
+#include <QtGui/QIcon>
 #include <memory>
 
 class AboutDialog : public QDialog {
 public:
-    explicit AboutDialog(QWidget *parent = nullptr);
+    AboutDialog(const QIcon &icon, QWidget *parent = nullptr);
     ~AboutDialog();
 
 private:

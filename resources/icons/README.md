@@ -1,0 +1,5 @@
+The icon artwork from this directory is based on [Noto Emoji].
+The originals and the derivatives are both distributed under
+the Apache License 2.0.
+
+[Noto Emoji]: https://github.com/googlefonts/noto-emoji
