@@ -332,7 +332,7 @@ void Application::openSettingsDialog()
 
         QObject::connect(
             dlg, &SettingsDialog::autostartChanged,
-            this, [this](bool value) { if (value) installAutoStartFile(); else removeAutoStartFile(); });
+            this, [](bool value) { if (value) installAutoStartFile(); else removeAutoStartFile(); });
     }
 
     dlg->show();
