@@ -1,4 +1,4 @@
-Name:       {{{ git_dir_name }}}
+Name:       {{{git_dir_name}}}
 
 Version:    {{{package_version}}}{{{git_version_appendix}}}
 
@@ -10,11 +10,11 @@ License:    GPLv2+
 
 URL:        https://github.com/jpcima/midiwake
 
-VCS:        {{{ git_dir_vcs }}}
+VCS:        {{{git_dir_vcs}}}
 
-Source0:    {{{ git_dir_pack }}}
-Source1:    {{{ git_pack dir_name=QCtrlSignals    path=thirdparty/QCtrlSignals }}}
-Source2:    {{{ git_pack dir_name=QSingleInstance path=thirdparty/QSingleInstance }}}
+Source0:    {{{git_dir_pack}}}
+Source1:    {{{git_pack dir_name=QCtrlSignals    path=thirdparty/QCtrlSignals}}}
+Source2:    {{{git_pack dir_name=QSingleInstance path=thirdparty/QSingleInstance}}}
 
 BuildRequires: cmake
 BuildRequires: gcc-c++
@@ -39,7 +39,7 @@ For instance, one can practice a piece of music on screen without risks of
 interruption.
 
 %prep
-{{{ git_dir_setup_macro }}}
+{{{git_dir_setup_macro}}}
 tar -C thirdparty -xf %{SOURCE1}
 tar -C thirdparty -xf %{SOURCE2}
 
@@ -58,4 +58,4 @@ tar -C thirdparty -xf %{SOURCE2}
 %{_datadir}/pixmaps/midiwake.png
 
 %changelog
-{{{ git_dir_changelog }}}
+{{{git_dir_changelog}}}
