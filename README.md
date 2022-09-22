@@ -21,3 +21,9 @@ Feedback regarding particular desktops is appreciated.
 Official RPM packages are available on [COPR].
 
 [COPR]: https://copr.fedorainfracloud.org/coprs/jpcima/midiwake/
+
+## Release notes
+
+**1.0.0**
+
+- Initial release of the program
