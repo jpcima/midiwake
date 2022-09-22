@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
-project(midiwake VERSION "0.0.0" LANGUAGES CXX)
+
+file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/version.txt" package_version)
+list(GET package_version 0 package_version)
+
+project(midiwake VERSION "${package_version}" LANGUAGES CXX)
 set(APPLICATION_DISPLAY_NAME "MidiWake")
 set(APPLICATION_BUNDLE_IDENTIFIER "org.sdf1.jpcima.MidiWake")
 
@@ -20,29 +24,6 @@ pkg_check_modules(alsa "alsa" REQUIRED IMPORTED_TARGET)
 find_package(${MIDIWAKE_QT} COMPONENTS Widgets DBus Network Core LinguistTools REQUIRED)
 
 include(GNUInstallDirs)
-
-####
-# rpkg version
-
-function(midiwake_update_rpkg_version SPEC LEAD FOLLOW)
-  file(READ "${SPEC}" text)
-  set(expr "((^|\n|\r)Version[ \t]*:[ \t]*)[^\n\r]*")
-  string(REGEX MATCH "${expr}" match "${text}")
-  if(match STREQUAL "")
-    message(FATAL_ERROR "The spec file does not have a \"Version\" field.")
-  endif()
-  string(REGEX REPLACE
-    "${expr}" "\\1{{{ git_dir_version lead=\"${LEAD}\" follow=\"${FOLLOW}\" }}}"
-    new_text "${text}")
-  if(NOT text STREQUAL new_text)
-    file(WRITE "${SPEC}" "${new_text}")
-  endif()
-endfunction()
-
-midiwake_update_rpkg_version(
-  "${PROJECT_SOURCE_DIR}/midiwake.rpkg.spec"
-  "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
-  "${PROJECT_VERSION_PATCH}")
 
 ###
 add_library(QCtrlSignals STATIC EXCLUDE_FROM_ALL

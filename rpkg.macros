@@ -1,0 +1,3 @@
+function package_version() {
+    output "$(head -n 1 "$GIT_ROOT/version.txt")"
+}
